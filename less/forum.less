@@ -1,0 +1,113 @@
+// ── Waymark ──────────────────────────────────────────────────────────────────
+//
+// One quiet line. It takes the theme's own text, muted and link colours, so it
+// sits in any theme without a setting for each.
+
+.Waymark {
+  padding: 12px 0 14px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--muted-color);
+}
+
+// In Flarum's own page layout the content below brings its own top spacing.
+.Page-main > .Waymark {
+  padding-bottom: 0;
+}
+
+// 🚨 Drawn inside a page's own container (Page Builder's record page does
+// this), the trail's container would add the side padding a second time and
+// sit 15px in from the heading below it.
+.container .Waymark > .container {
+  width: auto;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.Waymark-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.Waymark-crumb,
+.Waymark-more {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+// The separator belongs to the crumb it introduces, so a crumb that is hidden
+// takes its separator with it. Decorative: screen readers announce the list.
+.Waymark-list > li + li::before {
+  content: "›";
+  margin: 0 0.5em;
+  opacity: 0.6;
+}
+
+.Waymark-link {
+  color: var(--link-color, var(--primary-color));
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
+.Waymark-current {
+  color: var(--text-color, var(--body-color));
+  font-weight: 600;
+  // A long discussion title ends the line instead of wrapping it.
+  max-width: 60ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Waymark-more {
+  display: none;
+}
+
+.Waymark-moreButton {
+  padding: 0 0.3em;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--control-bg);
+  }
+}
+
+// 767.98px, not 767px: Flarum's own phone layout switches at the fraction.
+@media (max-width: 767.98px) {
+  .Waymark {
+    padding-top: 10px;
+  }
+
+  .Waymark:not(.is-expanded) {
+    .Waymark-crumb--middle {
+      display: none;
+    }
+
+    .Waymark-more {
+      display: inline-flex;
+    }
+  }
+
+  .Waymark-current {
+    max-width: 22ch;
+  }
+
+  .Waymark--hideOnPhone {
+    display: none;
+  }
+}

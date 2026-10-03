@@ -1,0 +1,34 @@
+ernestdefoe-waymark:
+  forum:
+    label: Breadcrumb
+    home: Home
+    show_all: Show the whole trail
+    tags: => flarum-tags.ref.tags
+    all_discussions: => core.ref.all_discussions
+    discussions: => core.ref.discussions
+    security: => core.ref.security
+    settings: => core.ref.settings
+    notifications: => core.ref.notifications
+    posts: => core.ref.posts
+    messages: Messages
+    search: "Search: “{query}”"
+  admin:
+    position_label: Position
+    position_help: Where the trail sits on a page.
+    position_below: Below the page header (hero)
+    position_above: Above the page header (hero)
+    home_label: First crumb
+    home_help: What the first crumb, which always links to your forum's home page, is called.
+    home_home: Home
+    home_title: Your forum's title
+    mobile_label: On phones
+    mobile_help: A long trail can take several lines on a narrow screen.
+    mobile_collapse: Shorten it — Home, … and the last two crumbs, the rest on a tap
+    mobile_hide: Hide it
+    pages_heading: Show a trail on
+    show_discussions: Discussions
+    show_tags: Tags and tag pages
+    show_users: Profiles
+    show_messages: Messages
+    show_other: Every other page
+    show_other_help: The discussion list, settings, notifications, and pages added by other extensions (named after the page's own title).

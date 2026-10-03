@@ -1,0 +1,51 @@
+{
+    "name": "ernestdefoe/waymark",
+    "description": "Breadcrumbs for Flarum 2: a trail on every page, from Home through tags to the discussion you are reading, matching the one search engines see.",
+    "keywords": [
+        "flarum",
+        "flarum-extension",
+        "breadcrumbs",
+        "navigation",
+        "seo"
+    ],
+    "type": "flarum-extension",
+    "license": "MIT",
+    "homepage": "https://github.com/ernestdefoe/waymark",
+    "support": {
+        "issues": "https://github.com/ernestdefoe/waymark/issues",
+        "source": "https://github.com/ernestdefoe/waymark"
+    },
+    "authors": [
+        {
+            "name": "Ernest Defoe",
+            "email": "ernestdefoe@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "flarum/core": "^2.0"
+    },
+    "suggest": {
+        "flarum/tags": "Tag pages and discussions get their tag in the trail.",
+        "fof/seo": "Waymark keeps the breadcrumbs FoF SEO gives search engines in step with the visible trail."
+    },
+    "autoload": {
+        "psr-4": {
+            "Ernestdefoe\\Waymark\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Waymark",
+            "category": "feature",
+            "icon": {
+                "name": "fas fa-signs-post",
+                "backgroundColor": "#0f766e",
+                "color": "#fff"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
