@@ -41,27 +41,38 @@ class AgreeWithWaymark
             return;
         }
 
-        $tagsIsHome = trim((string) $this->settings->get('default_route'), '/') === 'tags';
-        $tagsLabel = $this->translator->trans('flarum-tags.ref.tags');
+        $homeIsTags = $this->settings->get('ernestdefoe-waymark.home_target') === 'tags';
+        $tagsIsHome = $homeIsTags || trim((string) $this->settings->get('default_route'), '/') === 'tags';
+        $tagsText = trim((string) $this->settings->get('ernestdefoe-waymark.tags_text'));
+        $tagsLabel = $tagsText !== '' ? $tagsText : $this->translator->trans('flarum-tags.ref.tags');
+        $homeText = trim((string) $this->settings->get('ernestdefoe-waymark.home_text'));
 
         $out = [];
+        // The forum's root, before the first crumb may be pointed at /tags.
+        $root = rtrim((string) $crumbs[0]->url, '/');
 
         foreach ($crumbs as $i => $crumb) {
             if ($i === 0) {
-                if ($this->settings->get('ernestdefoe-waymark.home_label') !== 'title') {
-                    $crumb = new Crumb(
-                        $this->translator->trans('ernestdefoe-waymark.forum.home'),
-                        $crumb->url,
-                        $crumb->type,
-                        $crumb->extra,
-                    );
+                $name = $crumb->name;
+                if ($homeText !== '') {
+                    $name = $homeText;
+                } elseif ($this->settings->get('ernestdefoe-waymark.home_label') !== 'title') {
+                    $name = $this->translator->trans('ernestdefoe-waymark.forum.home');
                 }
 
-                $out[] = $crumb;
+                // Home pointed at the tags page: the root crumb leads there.
+                $url = $homeIsTags && $crumb->url !== null ? $root.'/tags' : $crumb->url;
+
+                $out[] = new Crumb($name, $url, $crumb->type, $crumb->extra);
                 continue;
             }
 
-            if ($this->isTagsCrumb($crumb)) {
+            // The tags page's own crumb, on the tags page, carries no link to
+            // recognise it by: it is the last crumb of /tags.
+            $onTagsPage = $crumb->url === null && $i === array_key_last($crumbs)
+                && preg_match('#/tags/?$#', $event->request->getUri()->getPath());
+
+            if ($this->isTagsCrumb($crumb) || $onTagsPage) {
                 if ($tagsIsHome) {
                     continue;
                 }
@@ -74,7 +85,13 @@ class AgreeWithWaymark
             $out[] = $crumb;
         }
 
-        $this->addProfileTab($out, $event->request->getUri()->getPath());
+        // On the tags page itself, when that page is Home: one crumb, not
+        // "Home › Tags" naming the same place twice.
+        if ($tagsIsHome && preg_match('#/tags/?$#', $event->request->getUri()->getPath())) {
+            $out = array_slice($out, 0, 1);
+        }
+
+        $this->addProfileTab($out, $event->request->getUri()->getPath(), $root);
 
         $event->trail->set($out);
     }
@@ -85,14 +102,13 @@ class AgreeWithWaymark
      *
      * @param list<Crumb> $crumbs
      */
-    private function addProfileTab(array &$crumbs, string $path): void
+    private function addProfileTab(array &$crumbs, string $path, string $home): void
     {
         if (! preg_match('#/u/([^/]+)/discussions/?$#', $path, $m) || count($crumbs) < 2) {
             return;
         }
 
         $last = array_key_last($crumbs);
-        $home = rtrim((string) $crumbs[0]->url, '/');
 
         $crumbs[$last] = new Crumb($crumbs[$last]->name, $home.'/u/'.$m[1], $crumbs[$last]->type, $crumbs[$last]->extra);
         $crumbs[] = new Crumb($this->translator->trans('core.ref.discussions'));

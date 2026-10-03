@@ -44,7 +44,12 @@ Admin → Waymark:
 
 - **Style:** plain links separated by ›, or tabs (below).
 - **Position:** below the page header (hero) or above it.
-- **First crumb:** "Home", or your forum's title.
+- **First crumb:** "Home", your forum's title, or any name you type.
+- **The first crumb links to:** your home page, or the tags page. If your home
+  page is a landing page visitors see once, point it at the tags page so
+  "Home" takes them back into the forum.
+- **Name for the tags page:** "Tags" by default; many forums prefer "Forums" or
+  "Categories".
 - **On phones:** shorten the trail, or hide it.
 - **Show a trail on:** discussions, tags, profiles, messages and every other
   page, each switched separately.

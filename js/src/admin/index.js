@@ -30,6 +30,26 @@ app.initializers.add('ernestdefoe-waymark', () => {
       default: 'home',
     })
     .registerSetting({
+      setting: 'ernestdefoe-waymark.home_text',
+      type: 'text',
+      label: t('home_text_label'),
+      help: t('home_text_help'),
+    })
+    .registerSetting({
+      setting: 'ernestdefoe-waymark.home_target',
+      type: 'select',
+      label: t('home_target_label'),
+      help: t('home_target_help'),
+      options: { home: t('home_target_home'), tags: t('home_target_tags') },
+      default: 'home',
+    })
+    .registerSetting({
+      setting: 'ernestdefoe-waymark.tags_text',
+      type: 'text',
+      label: t('tags_text_label'),
+      help: t('tags_text_help'),
+    })
+    .registerSetting({
       setting: 'ernestdefoe-waymark.mobile',
       type: 'select',
       label: t('mobile_label'),

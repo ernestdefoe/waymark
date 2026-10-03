@@ -151,21 +151,40 @@ class BreadcrumbJsonLd
 
     protected function home(): array
     {
-        $label = $this->settings->get('ernestdefoe-waymark.home_label') === 'title'
-            ? (string) $this->settings->get('forum_title')
-            : $this->translator->trans('ernestdefoe-waymark.forum.home');
+        $label = trim((string) $this->settings->get('ernestdefoe-waymark.home_text'));
 
-        return [$label, rtrim($this->url->to('forum')->base(), '/').'/'];
+        if ($label === '') {
+            $label = $this->settings->get('ernestdefoe-waymark.home_label') === 'title'
+                ? (string) $this->settings->get('forum_title')
+                : $this->translator->trans('ernestdefoe-waymark.forum.home');
+        }
+
+        $url = $this->homeIsTags()
+            ? $this->url->to('forum')->route('tags')
+            : rtrim($this->url->to('forum')->base(), '/').'/';
+
+        return [$label, $url];
     }
 
-    /** "Tags", unless the tags page is the home page — then it is Home already. */
+    /**
+     * "Tags" (or the forum's own word for it), unless the tags page is Home
+     * already — as the forum's root, or because Home was pointed at it.
+     */
     protected function tagsCrumb(): ?array
     {
-        if (trim((string) $this->settings->get('default_route'), '/') === 'tags') {
+        if (trim((string) $this->settings->get('default_route'), '/') === 'tags' || $this->homeIsTags()) {
             return null;
         }
 
-        return [$this->translator->trans('flarum-tags.ref.tags'), $this->url->to('forum')->route('tags')];
+        $label = trim((string) $this->settings->get('ernestdefoe-waymark.tags_text'));
+
+        return [$label !== '' ? $label : $this->translator->trans('flarum-tags.ref.tags'), $this->url->to('forum')->route('tags')];
+    }
+
+    protected function homeIsTags(): bool
+    {
+        return $this->settings->get('ernestdefoe-waymark.home_target') === 'tags'
+            && $this->extensions->isEnabled('flarum-tags');
     }
 
     protected function tagCrumb(Tag $tag): array

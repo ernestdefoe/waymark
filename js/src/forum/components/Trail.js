@@ -1,6 +1,7 @@
 import app from 'flarum/forum/app';
 import Component from 'flarum/common/Component';
 import Link from 'flarum/common/components/Link';
+import extractText from 'flarum/common/utils/extractText';
 
 const t = (key, params) => app.translator.trans(`ernestdefoe-waymark.forum.${key}`, params);
 
@@ -103,9 +104,27 @@ Trail.prototype.items = function (crumbs, last, hidden, canCollapse) {
 
 /** The root crumb: "Home", or the forum's title if the forum chose that. */
 export function home() {
-  const label = app.forum.attribute('waymarkHomeLabel') === 'title' ? app.forum.attribute('title') : t('home');
+  const custom = String(app.forum.attribute('waymarkHomeText') || '').trim();
+  const label = custom || (app.forum.attribute('waymarkHomeLabel') === 'title' ? app.forum.attribute('title') : t('home'));
 
-  return { label, href: homeHref() };
+  return { label, href: homeIsTags() ? app.route('tags') : homeHref() };
+}
+
+/**
+ * Whether the first crumb leads to the tags page instead of the forum's root.
+ *
+ * For a forum whose root is a landing page (a Page Builder page, say) that
+ * visitors see once: "Home" should take them back into the forum, not to the
+ * splash they already passed. Only when the tags page exists.
+ */
+export function homeIsTags() {
+  return app.forum.attribute('waymarkHomeTarget') === 'tags' && !!(app.routes && app.routes.tags);
+}
+
+/** What the tags page is called in the trail: "Tags", or the forum's own word ("Forums"). */
+export function tagsLabel() {
+  const custom = String(app.forum.attribute('waymarkTagsText') || '').trim();
+  return custom || extractText(t('tags'));
 }
 
 /**

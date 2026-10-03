@@ -1,6 +1,6 @@
 import app from 'flarum/forum/app';
 import extractText from 'flarum/common/utils/extractText';
-import { homeHref } from './components/Trail';
+import { homeHref, homeIsTags, tagsLabel } from './components/Trail';
 
 const t = (key, params) => extractText(app.translator.trans(`ernestdefoe-waymark.forum.${key}`, params));
 const on = (attr) => app.forum.attribute(attr) !== false;
@@ -43,8 +43,10 @@ function tagCrumb(tag) {
 
 /** The tags page crumb, unless the tags page IS the home page. */
 function tagsCrumb() {
-  if (!app.routes.tags || isHomeRoute('tags')) return null;
-  return { label: t('tags'), href: app.route('tags') };
+  // The tags page IS Home when it is the forum's root, or when Home was
+  // pointed at it: either way, a second crumb for the same place is noise.
+  if (!app.routes.tags || isHomeRoute('tags') || homeIsTags()) return null;
+  return { label: tagsLabel(), href: app.route('tags') };
 }
 
 function lineage(tag) {
@@ -116,7 +118,9 @@ export const builtIn = {
 
   tags() {
     if (!on('waymarkTags')) return null;
-    return [{ label: t('tags') }];
+    // Home already is the tags page: a trail of one crumb is no trail.
+    if (homeIsTags()) return null;
+    return [{ label: tagsLabel() }];
   },
 
   discussion() {
