@@ -39,7 +39,12 @@ export default class Trail extends Component {
 
     return (
       <nav className={'Waymark' + mobile + (this.expanded ? ' is-expanded' : '')} aria-label={t('label')}>
-        <div className="container">
+        {/* 🚨 Page-container as well as container: themes resize the page's
+            content through .Page-container (Bespoke drops core's fixed width
+            for its own max-width), so a plain .container trail sat 40px off
+            the content under it on every Bespoke forum. Sharing the class
+            shares whatever the theme does to it. */}
+        <div className="container Page-container Waymark-inner">
           <ol className="Waymark-list">{this.items(crumbs, last, hidden, canCollapse)}</ol>
         </div>
       </nav>
