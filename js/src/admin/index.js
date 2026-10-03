@@ -14,6 +14,14 @@ app.initializers.add('ernestdefoe-waymark', () => {
       default: 'below',
     })
     .registerSetting({
+      setting: 'ernestdefoe-waymark.style',
+      type: 'select',
+      label: t('style_label'),
+      help: t('style_help'),
+      options: { plain: t('style_plain'), tabs: t('style_tabs') },
+      default: 'plain',
+    })
+    .registerSetting({
       setting: 'ernestdefoe-waymark.home_label',
       type: 'select',
       label: t('home_label'),

@@ -36,9 +36,10 @@ export default class Trail extends Component {
     const canCollapse = crumbs.some((c, i) => hidden(i));
 
     const mobile = app.forum.attribute('waymarkMobile') === 'hide' ? ' Waymark--hideOnPhone' : '';
+    const style = app.forum.attribute('waymarkStyle') === 'tabs' ? ' Waymark--tabs' : '';
 
     return (
-      <nav className={'Waymark' + mobile + (this.expanded ? ' is-expanded' : '')} aria-label={t('label')}>
+      <nav className={'Waymark' + style + mobile + (this.expanded ? ' is-expanded' : '')} aria-label={t('label')}>
         {/* 🚨 Page-container as well as container: themes resize the page's
             content through .Page-container (Bespoke drops core's fixed width
             for its own max-width), so a plain .container trail sat 40px off

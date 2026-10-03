@@ -42,6 +42,7 @@ tapping … shows the rest.
 
 Admin → Waymark:
 
+- **Style:** plain links separated by ›, or tabs (below).
 - **Position:** below the page header (hero) or above it.
 - **First crumb:** "Home", or your forum's title.
 - **On phones:** shorten the trail, or hide it.
@@ -52,17 +53,45 @@ It uses your theme's own text and link colours, so there's nothing to style.
 
 ![Waymark's settings](screenshots/settings.png)
 
-## With FoF SEO
+### Tabs
 
-[FoF SEO](https://github.com/FriendsOfFlarum/seo) already tells search engines
-a breadcrumb trail for each page. When it's installed, Waymark keeps the two in
-step, so search results and your pages say the same thing:
+Each step on its own slanted tab. The design is
+[Tutrix](https://discuss.flarum.org/u/Tutrix)'s, shared in the Waymark thread
+on discuss.flarum.org and built in so nobody has to keep the CSS up to date.
+
+![The trail as slanted tabs: Home, Tags, SEC, Alabama](screenshots/tabs.png)
+
+It follows your colour scheme, and on a phone it shortens the same way the
+plain style does:
+
+![The tabs in dark mode](screenshots/tabs-dark.png)
+
+<img src="screenshots/tabs-phone.png" alt="On a phone: Home, …, SEC, Alabama as tabs" width="390">
+
+## Search engines
+
+Search engines can show a page's breadcrumb in their results instead of its
+URL, when the page describes its trail as
+[BreadcrumbList](https://schema.org/BreadcrumbList) structured data.
+
+**Without FoF SEO,** Waymark adds that structured data itself, to discussions
+and tag pages, matching the visible trail:
+
+```
+Home › SEC › Alabama › East Carolina at Alabama
+```
+
+A discussion or tag the visitor can't see gets none, so nothing private is
+named.
+
+**With [FoF SEO](https://github.com/FriendsOfFlarum/seo),** which already
+publishes a breadcrumb for every page, Waymark adds nothing of its own (two
+would give search engines two answers). It keeps FoF SEO's in step with the
+visible trail instead:
 
 - the first crumb uses the same word ("Home", or your forum's title)
 - "Tags" is translated, and left out when the tags page is your home page
 - a profile's Discussions tab gets its crumb
-
-Waymark doesn't need FoF SEO. Without it, there's simply nothing to keep in step.
 
 ## For extension developers
 

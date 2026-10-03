@@ -121,3 +121,55 @@
     display: none;
   }
 }
+
+// ── Tabs style ───────────────────────────────────────────────────────────────
+//
+// Each step on its own slanted tab. The design is Tutrix's, shared on
+// discuss.flarum.org (d/39983) — built in so nobody has to maintain the CSS.
+//
+// The tab is skewed and its text skewed back, so the words stay upright: the
+// link and the current step are the inner layer that un-skews.
+
+.Waymark--tabs {
+  .Waymark-list {
+    // The first tab's slant leans past the content edge; this keeps it inside.
+    margin-left: 6px;
+    row-gap: 6px;
+  }
+
+  .Waymark-list > li + li::before {
+    display: none;
+  }
+
+  .Waymark-crumb,
+  .Waymark-more {
+    margin-right: 4px;
+    padding: 2px 10px;
+    border-radius: 5px;
+    background: var(--body-bg-light, var(--control-bg));
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 -1px 2px 0 rgba(0, 0, 0, 0.02);
+    transform: skew(-26deg);
+  }
+
+  .Waymark-link,
+  .Waymark-current,
+  .Waymark-moreButton {
+    display: inline-block;
+    transform: skew(26deg);
+  }
+
+  .Waymark-current {
+    font-weight: normal;
+  }
+
+  .Waymark-moreButton:hover,
+  .Waymark-moreButton:focus-visible {
+    background: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .Waymark--tabs:not(.is-expanded) .Waymark-more {
+    display: inline-flex;
+  }
+}

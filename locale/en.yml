@@ -17,6 +17,10 @@ ernestdefoe-waymark:
     position_help: Where the trail sits on a page.
     position_below: Below the page header (hero)
     position_above: Above the page header (hero)
+    style_label: Style
+    style_help: How the trail looks. Both use your theme's own colours.
+    style_plain: Plain — links separated by ›
+    style_tabs: Tabs — each step on its own slanted tab
     home_label: First crumb
     home_help: What the first crumb, which always links to your forum's home page, is called.
     home_home: Home

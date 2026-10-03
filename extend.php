@@ -1,12 +1,15 @@
 <?php
 
 use Ernestdefoe\Waymark\Seo\AgreeWithWaymark;
+use Ernestdefoe\Waymark\Seo\BreadcrumbJsonLd;
 use Flarum\Extend;
 
 $extenders = [
     (new Extend\Frontend('forum'))
         ->js(__DIR__ . '/js/dist/forum.js')
-        ->css(__DIR__ . '/less/forum.less'),
+        ->css(__DIR__ . '/less/forum.less')
+        // Structured data for search engines, only when FoF SEO isn't enabled.
+        ->content(BreadcrumbJsonLd::class),
 
     (new Extend\Frontend('admin'))
         ->js(__DIR__ . '/js/dist/admin.js'),
@@ -17,6 +20,7 @@ $extenders = [
         ->default('ernestdefoe-waymark.position', 'below')
         ->default('ernestdefoe-waymark.home_label', 'home')
         ->default('ernestdefoe-waymark.mobile', 'collapse')
+        ->default('ernestdefoe-waymark.style', 'plain')
         ->default('ernestdefoe-waymark.show_discussions', true)
         ->default('ernestdefoe-waymark.show_tags', true)
         ->default('ernestdefoe-waymark.show_users', true)
@@ -25,6 +29,7 @@ $extenders = [
         ->serializeToForum('waymarkPosition', 'ernestdefoe-waymark.position')
         ->serializeToForum('waymarkHomeLabel', 'ernestdefoe-waymark.home_label')
         ->serializeToForum('waymarkMobile', 'ernestdefoe-waymark.mobile')
+        ->serializeToForum('waymarkStyle', 'ernestdefoe-waymark.style')
         ->serializeToForum('waymarkDiscussions', 'ernestdefoe-waymark.show_discussions', 'boolval')
         ->serializeToForum('waymarkTags', 'ernestdefoe-waymark.show_tags', 'boolval')
         ->serializeToForum('waymarkUsers', 'ernestdefoe-waymark.show_users', 'boolval')
