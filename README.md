@@ -7,6 +7,8 @@ are and how you got there, the way traditional forums always have:
 
 Every crumb but the last is a link, so going back up a level is one click.
 
+![A discussion with its trail: Home › SEC › Alabama › East Carolina at Alabama](screenshots/discussion.png)
+
 ## Where it shows
 
 | Page | Trail |
@@ -29,6 +31,10 @@ left out, so a tag reads Home › SEC › Alabama.
 A discussion follows its **primary** tags: its child tag and that tag's parent.
 Secondary tags describe a discussion; they aren't where it lives.
 
+![A child tag's page: Home › Tags › SEC › Alabama](screenshots/tag.png)
+
+<img src="screenshots/phone.png" alt="On a phone: Home › … › Alabama › East Carolina at Alabama" width="390">
+
 On a phone a long trail shortens to Home › … › Alabama › *the discussion*, and
 tapping … shows the rest.
 
@@ -43,6 +49,8 @@ Admin → Waymark:
   page, each switched separately.
 
 It uses your theme's own text and link colours, so there's nothing to style.
+
+![Waymark's settings](screenshots/settings.png)
 
 ## With FoF SEO
 
