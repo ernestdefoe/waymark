@@ -159,9 +159,11 @@ class BreadcrumbJsonLd
                 : $this->translator->trans('ernestdefoe-waymark.forum.home');
         }
 
-        $url = $this->homeIsTags()
-            ? $this->url->to('forum')->route('tags')
-            : rtrim($this->url->to('forum')->base(), '/').'/';
+        $url = match (true) {
+            $this->homeIsTags() => $this->url->to('forum')->route('tags'),
+            $this->settings->get('ernestdefoe-waymark.home_target') === 'all' => $this->url->to('forum')->route('index'),
+            default => rtrim($this->url->to('forum')->base(), '/').'/',
+        };
 
         return [$label, $url];
     }

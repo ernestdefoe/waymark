@@ -60,8 +60,14 @@ class AgreeWithWaymark
                     $name = $this->translator->trans('ernestdefoe-waymark.forum.home');
                 }
 
-                // Home pointed at the tags page: the root crumb leads there.
-                $url = $homeIsTags && $crumb->url !== null ? $root.'/tags' : $crumb->url;
+                // Home pointed at the tags page or the discussions list: the
+                // root crumb leads there.
+                $target = $this->settings->get('ernestdefoe-waymark.home_target');
+                $url = $crumb->url === null ? null : match (true) {
+                    $homeIsTags => $root.'/tags',
+                    $target === 'all' => $root.'/all',
+                    default => $crumb->url,
+                };
 
                 $out[] = new Crumb($name, $url, $crumb->type, $crumb->extra);
                 continue;

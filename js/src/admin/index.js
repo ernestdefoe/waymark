@@ -40,7 +40,7 @@ app.initializers.add('ernestdefoe-waymark', () => {
       type: 'select',
       label: t('home_target_label'),
       help: t('home_target_help'),
-      options: { home: t('home_target_home'), tags: t('home_target_tags') },
+      options: { home: t('home_target_home'), all: t('home_target_all'), tags: t('home_target_tags') },
       default: 'home',
     })
     .registerSetting({

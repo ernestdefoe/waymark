@@ -1,6 +1,6 @@
 import app from 'flarum/forum/app';
 import extractText from 'flarum/common/utils/extractText';
-import { homeHref, homeIsTags, tagsLabel } from './components/Trail';
+import { homeHref, homeIsDiscussions, homeIsTags, tagsLabel } from './components/Trail';
 
 const t = (key, params) => extractText(app.translator.trans(`ernestdefoe-waymark.forum.${key}`, params));
 const on = (attr) => app.forum.attribute(attr) !== false;
@@ -98,8 +98,9 @@ export const builtIn = {
     if (!on('waymarkOther')) return null;
     const q = searchQuery();
 
-    // /all on a forum whose home it is: an alias of Home, not a page under it.
-    if (isHomeRoute('index')) return q ? [searchCrumb(q)] : null;
+    // /all on a forum whose home it is, or that Home was pointed at: an alias
+    // of Home, not a page under it.
+    if (isHomeRoute('index') || homeIsDiscussions()) return q ? [searchCrumb(q)] : null;
 
     return [{ label: t('all_discussions'), href: q ? app.route('index') : undefined }, searchCrumb(q)];
   },

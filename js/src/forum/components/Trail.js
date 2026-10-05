@@ -107,7 +107,7 @@ export function home() {
   const custom = String(app.forum.attribute('waymarkHomeText') || '').trim();
   const label = custom || (app.forum.attribute('waymarkHomeLabel') === 'title' ? app.forum.attribute('title') : t('home'));
 
-  return { label, href: homeIsTags() ? app.route('tags') : homeHref() };
+  return { label, href: homeIsTags() ? app.route('tags') : homeIsDiscussions() ? app.route('index') : homeHref() };
 }
 
 /**
@@ -119,6 +119,16 @@ export function home() {
  */
 export function homeIsTags() {
   return app.forum.attribute('waymarkHomeTarget') === 'tags' && !!(app.routes && app.routes.tags);
+}
+
+/**
+ * Whether the first crumb leads to the discussions list (/all).
+ *
+ * For a forum whose root is something else entirely (a blog, a landing page)
+ * and which wants "Home" to mean the forum itself.
+ */
+export function homeIsDiscussions() {
+  return app.forum.attribute('waymarkHomeTarget') === 'all' && !!(app.routes && app.routes.index);
 }
 
 /** What the tags page is called in the trail: "Tags", or the forum's own word ("Forums"). */
