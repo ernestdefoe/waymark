@@ -98,9 +98,15 @@ export const builtIn = {
     if (!on('waymarkOther')) return null;
     const q = searchQuery();
 
-    // /all on a forum whose home it is, or that Home was pointed at: an alias
-    // of Home, not a page under it.
-    if (isHomeRoute('index') || homeIsDiscussions()) return q ? [searchCrumb(q)] : null;
+    // /all on a forum whose home it is: an alias of Home, not a page under it.
+    if (isHomeRoute('index')) return q ? [searchCrumb(q)] : null;
+
+    // 🚨 Home pointed at /all on a forum whose front page is something else
+    // (a blog): /all is still a page of its own and keeps a trail. Treating
+    // it as Home left the discussions list, the page those forums browse
+    // from, with no trail at all. A search needs only Home before it, which
+    // already leads here.
+    if (homeIsDiscussions()) return [q ? searchCrumb(q) : { label: t('all_discussions') }];
 
     return [{ label: t('all_discussions'), href: q ? app.route('index') : undefined }, searchCrumb(q)];
   },
