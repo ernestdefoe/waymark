@@ -137,6 +137,10 @@ composer update ernestdefoe/waymark
 php flarum cache:clear
 ```
 
+## Discuss
+
+Questions, ideas and release notes: [Waymark on discuss.flarum.org](https://discuss.flarum.org/d/39983-waymark).
+
 ## Licence
 
 MIT.
