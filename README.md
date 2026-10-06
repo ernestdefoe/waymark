@@ -137,9 +137,11 @@ composer update ernestdefoe/waymark
 php flarum cache:clear
 ```
 
-## Discuss
+## Support
 
-Questions, ideas and release notes: [Waymark on discuss.flarum.org](https://discuss.flarum.org/d/39983-waymark).
+- **Support forum:** [Waymark on ernestdefoe.online](https://ernestdefoe.online/d/106)
+- **Flarum community:** [Waymark on discuss.flarum.org](https://discuss.flarum.org/d/39983-waymark)
+- **Bug reports:** [GitHub issues](https://github.com/ernestdefoe/waymark/issues)
 
 ## Licence
 
