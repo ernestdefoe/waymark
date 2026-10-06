@@ -12,6 +12,7 @@
     "license": "MIT",
     "homepage": "https://github.com/ernestdefoe/waymark",
     "support": {
+        "forum": "https://discuss.flarum.org/d/39983-waymark",
         "issues": "https://github.com/ernestdefoe/waymark/issues",
         "source": "https://github.com/ernestdefoe/waymark"
     },
