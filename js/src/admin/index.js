@@ -50,6 +50,14 @@ app.initializers.add('ernestdefoe-waymark', () => {
       help: t('tags_text_help'),
     })
     .registerSetting({
+      setting: 'ernestdefoe-waymark.tags_crumb',
+      type: 'select',
+      label: t('tags_crumb_label'),
+      help: t('tags_crumb_help'),
+      options: { never: t('tags_crumb_never'), tags: t('tags_crumb_tags'), always: t('tags_crumb_always') },
+      default: 'tags',
+    })
+    .registerSetting({
       setting: 'ernestdefoe-waymark.mobile',
       type: 'select',
       label: t('mobile_label'),

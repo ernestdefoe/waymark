@@ -46,6 +46,7 @@ class AgreeWithWaymark
         $tagsText = trim((string) $this->settings->get('ernestdefoe-waymark.tags_text'));
         $tagsLabel = $tagsText !== '' ? $tagsText : $this->translator->trans('flarum-tags.ref.tags');
         $homeText = trim((string) $this->settings->get('ernestdefoe-waymark.home_text'));
+        $tagsNever = $this->settings->get('ernestdefoe-waymark.tags_crumb') === 'never';
 
         $out = [];
         // The forum's root, before the first crumb may be pointed at /tags.
@@ -79,7 +80,9 @@ class AgreeWithWaymark
                 && preg_match('#/tags/?$#', $event->request->getUri()->getPath());
 
             if ($this->isTagsCrumb($crumb) || $onTagsPage) {
-                if ($tagsIsHome) {
+                // Home already is the tags page, or the forum wants it out of
+                // its trails (the tags page keeps its own crumb).
+                if ($tagsIsHome || ($tagsNever && ! $onTagsPage)) {
                     continue;
                 }
 
@@ -89,6 +92,15 @@ class AgreeWithWaymark
             }
 
             $out[] = $crumb;
+        }
+
+        // Everywhere: a discussion's trail gains the tags page above its first
+        // tag, as Waymark's own trail does. Only above a tag, never as
+        // "Home › Tags › title".
+        if (! $tagsIsHome && $this->settings->get('ernestdefoe-waymark.tags_crumb') === 'always'
+            && preg_match('#/d/[^/]+#', $event->request->getUri()->getPath()) && count($out) > 2
+            && ! array_filter($out, fn (Crumb $c) => $this->isTagsCrumb($c))) {
+            array_splice($out, 1, 0, [new Crumb($tagsLabel, $root.'/tags')]);
         }
 
         // On the tags page itself, when that page is Home: one crumb, not

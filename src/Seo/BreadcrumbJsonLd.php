@@ -91,11 +91,12 @@ class BreadcrumbJsonLd
 
             $chain = $tagsOn ? array_map(fn (Tag $tag) => $this->tagCrumb($tag), $this->primaryLineage($discussion, $actor)) : [];
 
-            return [
+            return array_values(array_filter([
                 $this->home(),
+                $chain && $this->tagsCrumbMode() === 'always' ? $this->tagsCrumb() : null,
                 ...$chain,
                 [$discussion->title, $this->url->to('forum')->route('discussion', ['id' => $this->slugs->forResource(Discussion::class)->toSlug($discussion)])],
-            ];
+            ]));
         }
 
         if ($route === 'tag' && $tagsOn && $this->on('show_tags')) {
@@ -174,13 +175,22 @@ class BreadcrumbJsonLd
      */
     protected function tagsCrumb(): ?array
     {
-        if (trim((string) $this->settings->get('default_route'), '/') === 'tags' || $this->homeIsTags()) {
+        if (trim((string) $this->settings->get('default_route'), '/') === 'tags' || $this->homeIsTags()
+            || $this->tagsCrumbMode() === 'never') {
             return null;
         }
 
         $label = trim((string) $this->settings->get('ernestdefoe-waymark.tags_text'));
 
         return [$label !== '' ? $label : $this->translator->trans('flarum-tags.ref.tags'), $this->url->to('forum')->route('tags')];
+    }
+
+    /** 'never', 'tags' (tag pages only) or 'always' (discussions too). */
+    protected function tagsCrumbMode(): string
+    {
+        $mode = $this->settings->get('ernestdefoe-waymark.tags_crumb');
+
+        return in_array($mode, ['never', 'always'], true) ? $mode : 'tags';
     }
 
     protected function homeIsTags(): bool

@@ -41,11 +41,21 @@ function tagCrumb(tag) {
   return { label: tag.name(), href: app.route.tag(tag) };
 }
 
-/** The tags page crumb, unless the tags page IS the home page. */
+/**
+ * Where the forum wants the tags page in its trails: 'never' (Home › Category
+ * › Subcategory, as forums migrating from classic software expect), 'tags'
+ * (on tag pages only, the default) or 'always' (discussions too).
+ */
+function tagsCrumbMode() {
+  const mode = app.forum.attribute('waymarkTagsCrumb');
+  return mode === 'never' || mode === 'always' ? mode : 'tags';
+}
+
+/** The tags page crumb, unless the tags page IS the home page or the forum turned it off. */
 function tagsCrumb() {
   // The tags page IS Home when it is the forum's root, or when Home was
   // pointed at it: either way, a second crumb for the same place is noise.
-  if (!app.routes.tags || isHomeRoute('tags') || homeIsTags()) return null;
+  if (!app.routes.tags || isHomeRoute('tags') || homeIsTags() || tagsCrumbMode() === 'never') return null;
   return { label: tagsLabel(), href: app.route('tags') };
 }
 
@@ -135,7 +145,12 @@ export const builtIn = {
     const discussion = app.current.get('discussion');
     if (!discussion) return null;
 
-    return [...primaryLineage(discussion).map(tagCrumb), { label: discussion.title() }];
+    const chain = primaryLineage(discussion).map(tagCrumb);
+    // The tags page leads the lineage only when the forum wants it everywhere,
+    // and only above a tag: "Home › Tags › title" points nowhere useful.
+    const tags = chain.length && tagsCrumbMode() === 'always' ? tagsCrumb() : null;
+
+    return [tags, ...chain, { label: discussion.title() }];
   },
 
   user(name) {
