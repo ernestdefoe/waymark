@@ -2,7 +2,9 @@
 
 namespace Ernestdefoe\Waymark\Seo;
 
+use Flarum\Extension\ExtensionManager;
 use Flarum\Settings\SettingsRepositoryInterface;
+use Flarum\User\Guest;
 use FoF\Seo\Breadcrumb\Crumb;
 use FoF\Seo\Event\BuildingBreadcrumb;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -23,13 +25,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  *  - A profile's Discussions tab. FoF SEO describes /u/name/discussions as the
  *    profile itself; the visible trail says Home › Name › Discussions, so the
- *    name becomes a link to the profile and the tab is added after it.
+ *    name becomes a link to the profile and the tab is added after it. With
+ *    the full profile trail, the Posts tab is named too and Members leads.
  */
 class AgreeWithWaymark
 {
     public function __construct(
         protected SettingsRepositoryInterface $settings,
         protected TranslatorInterface $translator,
+        protected ExtensionManager $extensions,
     ) {
     }
 
@@ -122,14 +126,25 @@ class AgreeWithWaymark
      */
     private function addProfileTab(array &$crumbs, string $path, string $home): void
     {
-        if (! preg_match('#/u/([^/]+)/discussions/?$#', $path, $m) || count($crumbs) < 2) {
+        if (! preg_match('#/u/([^/]+)(/discussions)?/?$#', $path, $m) || count($crumbs) < 2) {
             return;
         }
 
-        $last = array_key_last($crumbs);
+        $full = $this->settings->get('ernestdefoe-waymark.users_crumb') === 'full';
+        $tab = isset($m[2]) ? 'core.ref.discussions' : ($full ? 'core.ref.posts' : null);
 
-        $crumbs[$last] = new Crumb($crumbs[$last]->name, $home.'/u/'.$m[1], $crumbs[$last]->type, $crumbs[$last]->extra);
-        $crumbs[] = new Crumb($this->translator->trans('core.ref.discussions'));
+        if ($tab !== null) {
+            $last = array_key_last($crumbs);
+            $crumbs[$last] = new Crumb($crumbs[$last]->name, $home.'/u/'.$m[1], $crumbs[$last]->type, $crumbs[$last]->extra);
+            $crumbs[] = new Crumb($this->translator->trans($tab));
+        }
+
+        // The full trail's Members crumb, only where it has somewhere to lead:
+        // a crumb in the middle of a trail needs a link, and search engines
+        // visit as guests, so the guest must be able to open the directory.
+        if ($full && $this->extensions->isEnabled('fof-user-directory') && (new Guest())->can('seeUserList')) {
+            array_splice($crumbs, 1, 0, [new Crumb($this->translator->trans('ernestdefoe-waymark.forum.members'), $home.'/users')]);
+        }
     }
 
     private function isTagsCrumb(Crumb $crumb): bool

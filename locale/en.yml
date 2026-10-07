@@ -11,6 +11,7 @@ ernestdefoe-waymark:
     notifications: => core.ref.notifications
     posts: => core.ref.posts
     messages: Messages
+    members: Members
     search: "Search: “{query}”"
   admin:
     position_label: Position
@@ -39,6 +40,10 @@ ernestdefoe-waymark:
     tags_crumb_never: Leave it out (Home › Category › Subcategory)
     tags_crumb_tags: On tag pages (Home › Tags › Category)
     tags_crumb_always: Everywhere, discussions included (Home › Tags › Category › discussion)
+    users_crumb_label: Profile trail
+    users_crumb_help: The full trail names every tab, Posts included. Members links to the member directory when FoF User Directory is installed.
+    users_crumb_short: Short (Home › name › tab)
+    users_crumb_full: Full (Home › Members › name › Posts)
     mobile_label: On phones
     mobile_help: A long trail can take several lines on a narrow screen.
     mobile_collapse: Shorten it — Home, … and the last two crumbs, the rest on a tap

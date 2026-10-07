@@ -87,7 +87,9 @@ Trail.prototype.items = function (crumbs, last, hidden, canCollapse) {
     out.push(
       <li key={'c' + i} className={'Waymark-crumb' + (hidden(i) ? ' Waymark-crumb--middle' : '')}>
         {i === last || !crumb.href ? (
-          <span className="Waymark-current" aria-current={i === last ? 'page' : undefined}>
+          // Unlinked but not the page itself (Members, with no directory to
+          // open): a section name, so it must not look like where you are.
+          <span className={'Waymark-current' + (i === last ? '' : ' Waymark-current--section')} aria-current={i === last ? 'page' : undefined}>
             {crumb.label}
           </span>
         ) : (

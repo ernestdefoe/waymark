@@ -20,6 +20,7 @@ Every crumb but the last is a link, so going back up a level is one click.
 | Searching inside a tag | Home › Tags › SEC › Search: “bama” |
 | A profile | Home › *name* |
 | A profile tab | Home › *name* › Discussions |
+| A profile, full trail | Home › Members › *name* › Posts |
 | Messages | Home › Messages › *the conversation* |
 | Settings, notifications | Home › Settings |
 | Any other page | Home › *the page's title*, e.g. Home › Pick'em |
@@ -50,6 +51,14 @@ Admin → Waymark:
   "Home" takes them back into the forum.
 - **Name for the tags page:** "Tags" by default; many forums prefer "Forums" or
   "Categories".
+- **The tags page in the trail:** on tag pages only (the default), everywhere
+  including discussions, or left out for a classic Category › Subcategory trail.
+- **Profile trail:** short (Home › *name* › Discussions), or full (Home ›
+  Members › *name* › Posts), which names every tab, Posts included. Members
+  links to the member directory when
+  [FoF User Directory](https://github.com/FriendsOfFlarum/user-directory) is
+  installed and the visitor may open it. Suggested by
+  [Tutrix](https://discuss.flarum.org/u/Tutrix).
 - **On phones:** shorten the trail, or hide it.
 - **Show a trail on:** discussions, tags, profiles, messages and every other
   page, each switched separately.
@@ -96,7 +105,8 @@ visible trail instead:
 
 - the first crumb uses the same word ("Home", or your forum's title)
 - "Tags" is translated, and left out when the tags page is your home page
-- a profile's Discussions tab gets its crumb
+- a profile's Discussions tab gets its crumb, and with the full profile trail
+  so does Posts, with Members leading when guests can open the member directory
 
 ## For extension developers
 

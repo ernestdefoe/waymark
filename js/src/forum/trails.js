@@ -159,6 +159,13 @@ export const builtIn = {
     if (!user) return null;
 
     const person = { label: user.displayName(), href: app.route.user(user) };
+
+    // Full: Home › Members › name › tab, naming the default tab (Posts) too.
+    if (app.forum.attribute('waymarkUsersCrumb') === 'full') {
+      const tab = name === 'user' || name === 'user.posts' ? t('posts') : userTab(name);
+      return tab ? [membersCrumb(), person, { label: tab }] : [membersCrumb(), { label: person.label }];
+    }
+
     const tab = name === 'user' || name === 'user.posts' ? null : userTab(name);
 
     return tab ? [person, { label: tab }] : [{ label: person.label }];
@@ -191,6 +198,12 @@ export const builtIn = {
 
 builtIn['discussion.near'] = builtIn.discussion;
 builtIn['dialog.message'] = builtIn.dialog;
+
+/** Members, linked to FoF User Directory's list when it is installed and this visitor may see it. */
+function membersCrumb() {
+  const directory = app.routes.fof_user_directory && app.forum.attribute('canViewUserDirectory');
+  return { label: t('members'), href: directory ? app.route('fof_user_directory') : undefined };
+}
 
 /**
  * The name of a profile tab.
