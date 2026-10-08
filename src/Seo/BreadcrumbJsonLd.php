@@ -10,6 +10,7 @@ use Flarum\Http\SlugManager;
 use Flarum\Http\UrlGenerator;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\Tags\Tag;
+use Flarum\User\User;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -61,7 +62,7 @@ class BreadcrumbJsonLd
         }
 
         $items = [];
-        foreach (array_values($crumbs) as $i => [$name, $url]) {
+        foreach ($crumbs as $i => [$name, $url]) {
             $items[] = ['@type' => 'ListItem', 'position' => $i + 1, 'name' => $name, 'item' => $url];
         }
 
@@ -122,7 +123,7 @@ class BreadcrumbJsonLd
      *
      * @return list<Tag>
      */
-    protected function primaryLineage(Discussion $discussion, $actor): array
+    protected function primaryLineage(Discussion $discussion, User $actor): array
     {
         $tags = $discussion->tags()->whereVisibleTo($actor)->get();
 
@@ -137,7 +138,7 @@ class BreadcrumbJsonLd
     }
 
     /** @return list<Tag> */
-    protected function lineage(Tag $tag, $actor): array
+    protected function lineage(Tag $tag, User $actor): array
     {
         $chain = [];
         $guard = 0;
