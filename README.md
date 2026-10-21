@@ -108,6 +108,27 @@ visible trail instead:
 - a profile's Discussions tab gets its crumb, and with the full profile trail
   so does Posts, with Members leading when guests can open the member directory
 
+## Works with linkrobins/wiki
+
+When [LR Wiki](https://github.com/linkrobins/flarum-wiki) (`linkrobins/wiki`)
+is enabled, its pages get their own trail, with nothing to set up:
+
+| Page | Trail |
+|---|---|
+| The wiki | Home › Wiki |
+| A category | Home › Wiki › Guides |
+| An article | Home › Wiki › Guides › *the article* |
+| An article with no category | Home › Wiki › *the article* |
+| Searching the wiki | Home › Wiki › Search: “flic” |
+| Writing or editing | Home › Wiki › New article |
+
+"Wiki" is the wiki's own word for itself, so a translation or a renamed label
+carries over. Articles also get a matching BreadcrumbList for search engines
+(through FoF SEO's when that is installed). Both are built from the article the
+wiki has already loaded: no extra requests and no extra queries, and nothing at
+all on a forum without the wiki.
+Suggested by [Tutrix](https://discuss.flarum.org/u/Tutrix).
+
 ## For extension developers
 
 Give your route its own trail. Return the crumbs after Home, the last one being

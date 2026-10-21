@@ -24,7 +24,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * The visible trail is drawn in the browser, so this is the server's copy of
  * the same rules, for the two kinds of page where a search result shows a
- * breadcrumb — discussions and tags — and it must agree with trails.js:
+ * breadcrumb — discussions, tags and linkrobins/wiki's pages (WikiCrumbs) —
+ * and it must agree with trails.js and wiki.js:
  *
  *   discussion  Home › parent tag › child tag › the discussion   (no "Tags")
  *   tag         Home › Tags › parent tag › the tag   ("Tags" left out when the
@@ -41,6 +42,7 @@ class BreadcrumbJsonLd
         protected TranslatorInterface $translator,
         protected UrlGenerator $url,
         protected SlugManager $slugs,
+        protected WikiCrumbs $wiki,
     ) {
     }
 
@@ -51,7 +53,7 @@ class BreadcrumbJsonLd
         }
 
         try {
-            $crumbs = $this->crumbs($request);
+            $crumbs = $this->crumbs($request, $document);
         } catch (\Throwable $e) {
             // Structured data is a nicety. It never costs a visitor the page.
             return;
@@ -76,7 +78,7 @@ class BreadcrumbJsonLd
     }
 
     /** @return list<array{0: string, 1: string}> */
-    protected function crumbs(ServerRequestInterface $request): array
+    protected function crumbs(ServerRequestInterface $request, Document $document): array
     {
         $route = $request->getAttribute('routeName');
         $params = (array) $request->getAttribute('routeParameters');
@@ -111,6 +113,11 @@ class BreadcrumbJsonLd
                 $this->tagsCrumb(),
                 ...array_map(fn (Tag $t) => $this->tagCrumb($t), $this->lineage($tag, $actor)),
             ]));
+        }
+
+        // linkrobins/wiki's pages, from the article the wiki already loaded.
+        if ($wiki = $this->wiki->crumbs($document, $request)) {
+            return [$this->home(), ...$wiki];
         }
 
         return [];

@@ -1,5 +1,6 @@
 <?php
 
+use Ernestdefoe\Waymark\Seo\AddWikiCrumbs;
 use Ernestdefoe\Waymark\Seo\AgreeWithWaymark;
 use Ernestdefoe\Waymark\Seo\BreadcrumbJsonLd;
 use Flarum\Extend;
@@ -57,6 +58,11 @@ $extenders = [
  */
 if (class_exists(\FoF\Seo\Event\BuildingBreadcrumb::class)) {
     $extenders[] = (new Extend\Event())->listen(\FoF\Seo\Event\BuildingBreadcrumb::class, AgreeWithWaymark::class);
+
+    // linkrobins/wiki's pages, which FoF SEO gives no trail of their own.
+    $extenders[] = (new Extend\Conditional())->whenExtensionEnabled('linkrobins-wiki', fn () => [
+        (new Extend\Event())->listen(\FoF\Seo\Event\PreparingPageMeta::class, AddWikiCrumbs::class),
+    ]);
 }
 
 return $extenders;

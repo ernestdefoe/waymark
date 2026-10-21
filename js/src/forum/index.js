@@ -3,6 +3,10 @@ import { extend } from 'flarum/common/extend';
 import PageStructure from 'flarum/forum/components/PageStructure';
 import Trail, { homeHref } from './components/Trail';
 import { builtIn, fallback } from './trails';
+import { wiki } from './wiki';
+
+// linkrobins/wiki's pages. Its routes exist only while it is enabled.
+Object.assign(builtIn, wiki);
 
 /** Trails registered by other extensions, by route name. They win over ours. */
 const registered = new Map();
